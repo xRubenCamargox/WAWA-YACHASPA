@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WAWA YACHASPA</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/CSS/css-princ.css">
+        <link rel="icon" href="/IMG/LOGO-ICONO.ico" type="image/x-icon">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-success">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#"><img src="/IMG/LOGO-ICONO.ico" style="height: 30px;">WAWA YACHASPA</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/index.html">Inicio - Qallarinapaq</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link " href="/PAGE/NUMEROS/numeros-prin.html">Numeros - Yupaykuna</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/PAGE/COLORES/principal-col.html">Colores - Llimp’ikunataq</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/PAGE/ANIMALES/animal-prin.html">Animales - Uywakuna</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" href="/PAGE/CUERPO HUMANO/CH-PRIN.html">Cuerpo Humano - Runa Kurku</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+            </nav>
+        </header>
+        <div class="d-flex justify-content-center align-items-center full-height">
+            <img src="/IMG/cuerpo-humano.png" style="width: 20rem;">
+        </div>
+        <footer class="d-flex justify-content-center">
+          <div class="btn-group" role="group" aria-label="Basic mixed styles example"> 
+            <button type="button" class="btn btn-success" style="width:7rem;" id="jugar" href="/PAGE/CUERPO HUMANO/preguntas_cuerpo.html">JUGAR</button>
+          </div>
+        </footer>
+        <div style="background-color: rgba(218, 125, 195); border-radius: 10px; padding: 10px; margin: 15px;">
+            <p> <b>Objetivo:</b> Enseñar a los niños las partes principales del cuerpo humano en 
+                Quechua, utilizando actividades interactivas que vinculen imágenes y sonidos para mejorar 
+                la memoria y la comprensión.                  
+            </p>
+            <p>
+                <b>Descripción:</b> Esta actividad se realizará mediante el funcionamiento de la 
+                aplicación donde las/los niños interactuarán con una figura animada que muestra las partes 
+                del cuerpo humano lo que permite comprender como funciona el cuerpo humano y sus 
+                sistemas. Al tocar una parte del cuerpo, escucharán su nombre en Quechua (ejemplo: ñawi 
+                – ojo, simi – boca, uma – cabeza).
+            </p>
+        </div>
+
+        <script>
+          // Obtener el botón
+          const botonJugar = document.getElementById('jugar');
+  
+          // Agregar evento de clic
+          botonJugar.addEventListener('click', () => {
+              // Redirigir a la URL del atributo href
+              const url = botonJugar.getAttribute('href');
+              if (url) {
+                  window.location.href = url;
+              } else {
+                  console.error('El botón no tiene un atributo href definido.');
+              }
+          });
+      </script>
+
+    </body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAWA YACHASPA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <script src="/SCRIPT/script-preguntas.js" defer></script>
+    <link rel="icon" href="/IMG/LOGO-ICONO.ico" type="image/x-icon">
+
+    <style>
+      .pregunta { font-size: 1.5rem; margin-bottom: 20px; }
+      .opciones img { width: 100%; height: 100%; }
+      .opcion { margin-bottom: 15px; }
+      #resultado { margin-top: 20px; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-success">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#"><img src="/IMG/LOGO-ICONO.ico" style="height: 30px;">WAWA YACHASPA</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/index.html">Inicio - Qallarinapaq</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/NUMEROS/numeros-prin.html">Numeros - Yupaykuna</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/COLORES/principal-col.html">Colores - Llimp’ikunataq</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/ANIMALES/animal-prin.html">Animales - Uywakuna</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/PAGE/CUERPO HUMANO/CH-PRIN.html">Cuerpo Humano - Runa Kurku</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+    </header>
+    <div id="cuestionario" class="container py-4 text-center">
+        <div id="pregunta" class="pregunta"></div>
+        <p>Escucha atentamente y selecciona la respuesta correcta</p>
+        <audio id="audio" controls></audio>
+        <div id="opciones" class="row row-cols-2 row-cols-md-4 g-3 justify-content-center"></div>
+        <button id="siguiente" class="btn btn-primary mt-4">Siguiente</button>
+        <div id="resultado" class="text-center"></div>
+        <button id="VolverJ" class="btn btn-primary mt-4" onclick="window.location.href = '/PAGE/CUERPO-HUMANO/preguntas_cuerpo.html'">Volver A Jugar</button>
+    </div>
+
+    <script>
+        const preguntas = [
+            {
+                pregunta: "¿Que parte del cuerpo es?",
+                imagenes: ["../../IMG/CUERPO-HUMANO/BOCA.jpg", "../../IMG/CUERPO-HUMANO/PIE.jpg", "../../IMG/CUERPO-HUMANO/MANO.jpg", "../../IMG/CUERPO-HUMANO/OREJA.jpg"], // Rutas a las imágenes
+                audio: "../../AUDIO/CUERPO-HUMANO/BOCA.mp3",
+                correcta: 0 // Índice de la imagen correcta
+            },
+            {
+                pregunta: "¿Que parte del cuerpo es?",
+                imagenes: ["../../IMG/CUERPO-HUMANO/MANO.jpg", "../../IMG/CUERPO-HUMANO/OJOS.jpg", "../../IMG/CUERPO-HUMANO/OREJA.jpg", "../../IMG/CUERPO-HUMANO/BOCA.jpg"], // Rutas a las imágenes
+                audio: "../../AUDIO/CUERPO-HUMANO/OREJA.mp3",
+                correcta: 2 // Índice de la imagen correcta
+            },
+            {
+                pregunta: "¿Que parte del cuerpo es?",
+                imagenes: ["../../IMG/CUERPO-HUMANO/OREJA.jpg", "../../IMG/CUERPO-HUMANO/BOCA.jpg", "../../IMG/CUERPO-HUMANO/PIE.jpg", "../../IMG/CUERPO-HUMANO/NARIZ.jpg"], // Rutas a las imágenes
+                audio: "../../AUDIO/CUERPO-HUMANO/NARIZ.mp3",
+                correcta: 3 // Índice de la imagen correcta
+            },
+            {
+                pregunta: "¿Que parte del cuerpo es?",
+                imagenes: ["../../IMG/CUERPO-HUMANO/CABEZA.jpg", "../../IMG/CUERPO-HUMANO/MANO.jpg", "../../IMG/CUERPO-HUMANO/NARIZ.jpg", "../../IMG/CUERPO-HUMANO/OJOS.jpg"], // Rutas a las imágenes
+                audio: "../../AUDIO/CUERPO-HUMANO/MANO.mp3",
+                correcta: 1 // Índice de la imagen correcta
+            },
+            {
+                pregunta: "¿Que parte del cuerpo es?",
+                imagenes: ["../../IMG/CUERPO-HUMANO/BOCA.jpg", "../../IMG/CUERPO-HUMANO/OJOS.jpg", "../../IMG/CUERPO-HUMANO/OREJA.jpg", "../../IMG/CUERPO-HUMANO/CABEZA.jpg"], // Rutas a las imágenes
+                audio: "../../AUDIO/CUERPO-HUMANO/CABEZA.mp3",
+                correcta: 3 // Índice de la imagen correcta
+            },
+            {
+                pregunta: "¿Que parte del cuerpo es?",
+                imagenes: ["../../IMG/CUERPO-HUMANO/OJOS.jpg", "../../IMG/CUERPO-HUMANO/MANO.jpg", "../../IMG/CUERPO-HUMANO/PIE.jpg", "../../IMG/CUERPO-HUMANO/NARIZ.jpg"], // Rutas a las imágenes
+                audio: "../../AUDIO/CUERPO-HUMANO/OJOS.mp3",
+                correcta: 0 // Índice de la imagen correcta
+            },
+            {
+                pregunta: "¿Que parte del cuerpo es?",
+                imagenes: ["../../IMG/CUERPO-HUMANO/CABEZA.jpg", "../../IMG/CUERPO-HUMANO/OREJA.jpg", "../../IMG/CUERPO-HUMANO/PIE.jpg", "../../IMG/CUERPO-HUMANO/BOCA.jpg"], // Rutas a las imágenes
+                audio: "../../AUDIO/CUERPO-HUMANO/PIE.mp3",
+                correcta: 2 // Índice de la imagen correcta
+            },
+            // Agregar más preguntas aquí
+        ];
+
+        let preguntaActual = 0;
+        let correctas = 0;
+        let incorrectas = 0;
+        document.getElementById('VolverJ').classList.add('d-none');
+
+        function mostrarPregunta() {
+            const pregunta = preguntas[preguntaActual];
+            document.getElementById('pregunta').textContent = pregunta.pregunta;
+
+            const opcionesDiv = document.getElementById('opciones');
+            opcionesDiv.innerHTML = '';
+
+            pregunta.imagenes.forEach((imagen, index) => {
+                const col = document.createElement('div');
+                col.className = 'col opcion';
+                col.innerHTML = `<button class="btn btn-outline-secondary w-100" onclick="verificarRespuesta(${index})">
+                                    <img src="${imagen}" alt="Opción ${index + 1}" class="img-fluid rounded">
+                                </button>`;
+                opcionesDiv.appendChild(col);
+            });
+
+            document.getElementById('audio').src = pregunta.audio;
+            document.getElementById('audio').play();
+        }
+
+        function verificarRespuesta(index) {
+        const pregunta = preguntas[preguntaActual];
+        const opcionesDiv = document.getElementById('opciones');
+
+        // Obtener todas las opciones para modificar estilos
+        const opciones = opcionesDiv.querySelectorAll('.opcion');
+
+        if (index === pregunta.correcta) {
+            correctas++;
+            //alert('¡Correcto!');
+            // Cambiar el fondo de la opción correcta a verde
+            opciones[index].querySelector('button').style.backgroundColor = 'green';
+        } else {
+            incorrectas++;
+            //alert('Incorrecto.');
+            // Cambiar el fondo de la opción seleccionada a rojo
+            opciones[index].querySelector('button').style.backgroundColor = 'red';
+        }
+
+        // Desactivar todas las opciones después de seleccionar
+        opciones.forEach(opcion => {
+            opcion.querySelector('button').disabled = true;
+        });
+
+        preguntaActual++;
+        if (preguntaActual < preguntas.length) {
+            // Mostrar siguiente pregunta después de un pequeño retraso
+            setTimeout(() => {
+                mostrarPregunta1();
+            }, 2000);
+        } else {
+            // Mostrar resultados finales
+            document.getElementById('resultado').textContent = `Resultados: ${correctas} correctas, ${incorrectas} incorrectas.`;
+            document.getElementById('siguiente').classList.add('d-none');
+            document.getElementById('VolverJ').classList.remove('d-none');
+        }
+    }
+
+        document.getElementById('siguiente').onclick = mostrarPregunta;
+        mostrarPregunta();
+    </script>
+</body>
+</html>
