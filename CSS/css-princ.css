@@ -1,0 +1,30 @@
+
+.LOGO-INICIO{
+    width: 50px;
+    height: auto;
+}
+
+body {
+    background-color:rgba(138, 255, 127, 0.473) ;
+        /* Configurar la imagen de fondo */
+        background-image: url('../IMG/fondo.png');
+    
+        /* Asegurar que la imagen cubra toda la pantalla */
+        background-size: cover;
+    
+        /* Evitar que la imagen se repita */
+        background-repeat: no-repeat;
+    
+        /* Centrar la imagen de fondo */
+        background-position: center;
+    
+        /* Fijar el fondo para que no se mueva al hacer scroll */
+        background-attachment: fixed;
+    
+        /* Opcional: color de respaldo por si la imagen no se carga */
+        background-color: #f0f0f0;
+    
+        /* Estilo general del cuerpo */
+        margin: 0;
+        font-family: Arial, sans-serif;
+}
