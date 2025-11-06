@@ -15,6 +15,74 @@
       .opciones img { width: 100%; height: 100%; }
       .opcion { margin-bottom: 15px; }
       #resultado { margin-top: 20px; font-size: 1.2rem; }
+
+      /* Animaciones de respuestas */
+      @keyframes correctAnimation {
+        0% { background-color: green; transform: scale(0.95); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      @keyframes incorrectAnimation {
+        0% { background-color: red; transform: scale(0.95); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      .btn-correcta {
+        background-color: green !important;
+        animation: correctAnimation 0.6s ease;
+      }
+
+      .btn-incorrecta {
+        background-color: red !important;
+        animation: incorrectAnimation 0.6s ease;
+      }
+
+      /* Modal Animations */
+      @keyframes slideIn {
+        0% { transform: scale(0); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+
+      .modal-content {
+        animation: slideIn 0.5s ease-out;
+      }
+
+      /* Center modal */
+      .modal-dialog-centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Adding fade effect for closing */
+      .modal.fade .modal-dialog {
+        transform: scale(0.7);
+        opacity: 0;
+        animation: fadeInOut 1.5s forwards;
+      }
+
+      @keyframes fadeInOut {
+        0% { transform: scale(0.7); opacity: 0; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 0; }
+      }
+
+      /* Correct Answer Animation */
+      .modal-content.correcto {
+        background-color: #28a745;
+        color: white;
+        animation: correctAnimation 1s ease-out;
+      }
+
+      /* Incorrect Answer Animation */
+      .modal-content.incorrecto {
+        background-color: #dc3545;
+        color: white;
+        animation: incorrectAnimation 1s ease-out;
+      }
+
     </style>
 </head>
 <body>
@@ -46,6 +114,15 @@
                   <li class="nav-item">
                     <a class="nav-link" href="/PAGE/CUERPO HUMANO/CH-PRIN.html">Cuerpo Humano - Runa Kurku</a>
                   </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/FAMILIA/fam-prin.html">Familia - Yawarmasi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/FIGURAS GEOMETRICAS/fig-geo-prin.html">Figuras Geometricas - Pachatupusqa salta</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/VERBOS/verbos-prin.html">Verbos - Rimana</a>
+                </li>
                 </ul>
               </div>
             </div>
@@ -61,45 +138,62 @@
         <button id="VolverJ" class="btn btn-primary mt-4" onclick="window.location.href = '/PAGE/ANIMALES/animales-preguntas.html'">Volver A Jugar</button>
     </div>
 
+    <!-- Modal para respuestas correctas e incorrectas -->
+    <div class="modal fade" id="respuestaModal" tabindex="-1" aria-labelledby="respuestaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="respuestaModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="mensajeModal">
+                    <!-- El mensaje dinámico de la respuesta será insertado aquí -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="mostrarPregunta()">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const preguntas = [
             {
-                pregunta: "¿Que animal es?",
-                imagenes: ["../../IMG/ANIMALES/PERRO.png", "../../IMG/ANIMALES/POLLITO.png", "../../IMG/ANIMALES/CONEJO.png", "../../IMG/ANIMALES/VACA.png"], // Rutas a las imágenes
+                pregunta: "¿Qué animal es?",
+                imagenes: ["../../IMG/ANIMALES/PERRO.png", "../../IMG/ANIMALES/POLLITO.png", "../../IMG/ANIMALES/CONEJO.png", "../../IMG/ANIMALES/VACA.png"],
                 audio: "../../AUDIO/ANIMALES/CONEJO.mp3",
-                correcta: 2 // Índice de la imagen correcta
+                correcta: 2
             },
             {
-                pregunta: "¿Que animal es?",
-                imagenes: ["../../IMG/ANIMALES/OBEJA.png", "../../IMG/ANIMALES/VACA.png", "../../IMG/ANIMALES/PERRO.png", "../../IMG/ANIMALES/GATO.png"], // Rutas a las imágenes
+                pregunta: "¿Qué animal es?",
+                imagenes: ["../../IMG/ANIMALES/OBEJA.png", "../../IMG/ANIMALES/VACA.png", "../../IMG/ANIMALES/PERRO.png", "../../IMG/ANIMALES/GATO.png"],
                 audio: "../../AUDIO/ANIMALES/GATO.mp3",
-                correcta: 3 // Índice de la imagen correcta
+                correcta: 3
             },
             {
-                pregunta: "¿Que animal es?",
-                imagenes: ["../../IMG/ANIMALES/GATO.png", "../../IMG/ANIMALES/OBEJA.png", "../../IMG/ANIMALES/POLLITO.png", "../../IMG/ANIMALES/PERRO.png"], // Rutas a las imágenes
+                pregunta: "¿Qué animal es?",
+                imagenes: ["../../IMG/ANIMALES/GATO.png", "../../IMG/ANIMALES/OBEJA.png", "../../IMG/ANIMALES/POLLITO.png", "../../IMG/ANIMALES/PERRO.png"],
                 audio: "../../AUDIO/ANIMALES/OBEJA.mp3",
-                correcta: 1 // Índice de la imagen correcta
+                correcta: 1
             },
             {
-                pregunta: "¿Que animal es?",
-                imagenes: ["../../IMG/ANIMALES/VACA.png", "../../IMG/ANIMALES/GATO.png", "../../IMG/ANIMALES/PERRO.png", "../../IMG/ANIMALES/POLLITO.png"], // Rutas a las imágenes
+                pregunta: "¿Qué animal es?",
+                imagenes: ["../../IMG/ANIMALES/VACA.png", "../../IMG/ANIMALES/GATO.png", "../../IMG/ANIMALES/PERRO.png", "../../IMG/ANIMALES/POLLITO.png"],
                 audio: "../../AUDIO/ANIMALES/PERRO.mp3",
-                correcta: 2 // Índice de la imagen correcta
+                correcta: 2
             },
             {
-                pregunta: "¿Que animal es?",
-                imagenes: ["../../IMG/ANIMALES/POLLITO.png", "../../IMG/ANIMALES/OBEJA.png", "../../IMG/ANIMALES/CONEJO.png", "../../IMG/ANIMALES/GATO.png"], // Rutas a las imágenes
+                pregunta: "¿Qué animal es?",
+                imagenes: ["../../IMG/ANIMALES/POLLITO.png", "../../IMG/ANIMALES/OBEJA.png", "../../IMG/ANIMALES/CONEJO.png", "../../IMG/ANIMALES/GATO.png"],
                 audio: "../../AUDIO/ANIMALES/POLLITO.mp3",
-                correcta: 0 // Índice de la imagen correcta
+                correcta: 0
             },
             {
-                pregunta: "¿Que animal es?",
-                imagenes: ["../../IMG/ANIMALES/CONEJO.png", "../../IMG/ANIMALES/PERRO.png", "../../IMG/ANIMALES/GATO.png", "../../IMG/ANIMALES/VACA.png"], // Rutas a las imágenes
+                pregunta: "¿Qué animal es?",
+                imagenes: ["../../IMG/ANIMALES/CONEJO.png", "../../IMG/ANIMALES/PERRO.png", "../../IMG/ANIMALES/GATO.png", "../../IMG/ANIMALES/VACA.png"],
                 audio: "../../AUDIO/ANIMALES/VACA.mp3",
-                correcta: 3 // Índice de la imagen correcta
-            },
-            // Agregar más preguntas aquí
+                correcta: 3
+            }
         ];
 
         let preguntaActual = 0;
@@ -128,42 +222,51 @@
         }
 
         function verificarRespuesta(index) {
-        const pregunta = preguntas[preguntaActual];
-        const opcionesDiv = document.getElementById('opciones');
+            const pregunta = preguntas[preguntaActual];
+            const opcionesDiv = document.getElementById('opciones');
+            const opciones = opcionesDiv.querySelectorAll('.opcion');
 
-        // Obtener todas las opciones para modificar estilos
-        const opciones = opcionesDiv.querySelectorAll('.opcion');
+            const modal = new bootstrap.Modal(document.getElementById('respuestaModal'));
+            const modalTitle = document.getElementById('respuestaModalLabel');
+            const modalBody = document.getElementById('mensajeModal');
 
-        if (index === pregunta.correcta) {
-            correctas++;
-            //alert('¡Correcto!');
-            // Cambiar el fondo de la opción correcta a verde
-            opciones[index].querySelector('button').style.backgroundColor = 'green';
-        } else {
-            incorrectas++;
-            //alert('Incorrecto.');
-            // Cambiar el fondo de la opción seleccionada a rojo
-            opciones[index].querySelector('button').style.backgroundColor = 'red';
-        }
+            if (index === pregunta.correcta) {
+                correctas++;
+                modalTitle.textContent = "¡Respuesta Correcta!";
+                modalBody.innerHTML = "<p>¡Bien hecho! Has seleccionado la respuesta correcta.</p>";
+                document.querySelector('.modal-content').classList.add('correcto'); // Agregar clase de animación verde
+            } else {
+                incorrectas++;
+                modalTitle.textContent = "¡Te has equivocado!";
+                modalBody.innerHTML = "<p>Inténtalo de nuevo. La respuesta correcta es diferente.</p>";
+                document.querySelector('.modal-content').classList.add('incorrecto'); // Agregar clase de animación roja
+            }
 
-        // Desactivar todas las opciones después de seleccionar
-        opciones.forEach(opcion => {
-            opcion.querySelector('button').disabled = true;
-        });
+            opciones.forEach(opcion => {
+                opcion.querySelector('button').disabled = true;
+            });
 
-        preguntaActual++;
-        if (preguntaActual < preguntas.length) {
-            // Mostrar siguiente pregunta después de un pequeño retraso
+            modal.show();
+
+            // Cerrar el modal después de 4 segundos (4000 ms)
             setTimeout(() => {
-                mostrarPregunta1();
+                modal.hide();
+                document.querySelector('.modal-content').classList.remove('correcto', 'incorrecto'); // Limpiar clases
             }, 2000);
-        } else {
-            // Mostrar resultados finales
-            document.getElementById('resultado').textContent = `Resultados: ${correctas} correctas, ${incorrectas} incorrectas.`;
-            document.getElementById('siguiente').classList.add('d-none');
-            document.getElementById('VolverJ').classList.remove('d-none');
+
+            preguntaActual++;
+            if (preguntaActual < preguntas.length) {
+                setTimeout(() => {
+                    mostrarPregunta();
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('resultado').textContent = `Resultados: ${correctas} correctas, ${incorrectas} incorrectas.`;
+                    document.getElementById('siguiente').classList.add('d-none');
+                    document.getElementById('VolverJ').classList.remove('d-none');
+                }, 1000);
+            }
         }
-    }
 
         document.getElementById('siguiente').onclick = mostrarPregunta;
         mostrarPregunta();

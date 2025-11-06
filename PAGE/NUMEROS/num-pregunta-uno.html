@@ -13,8 +13,76 @@
     <style>
       .pregunta { font-size: 1.5rem; margin-bottom: 20px; }
       .opciones img { width: 100%; height: 100%; }
-      .opcion { margin-bottom: 15px; }
+      .opcion { margin-bottom: 15px; transition: all 0.3s ease-in-out; }
       #resultado { margin-top: 20px; font-size: 1.2rem; }
+
+      /* Animaciones de respuestas */
+      @keyframes correctAnimation {
+        0% { background-color: green; transform: scale(0.95); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      @keyframes incorrectAnimation {
+        0% { background-color: red; transform: scale(0.95); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      .btn-correcta {
+        background-color: green !important;
+        animation: correctAnimation 0.6s ease;
+      }
+
+      .btn-incorrecta {
+        background-color: red !important;
+        animation: incorrectAnimation 0.6s ease;
+      }
+
+      /* Modal Animations */
+      @keyframes slideIn {
+        0% { transform: scale(0); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+
+      .modal-content {
+        animation: slideIn 0.5s ease-out;
+      }
+
+      /* Center modal */
+      .modal-dialog-centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Adding fade effect for closing */
+      .modal.fade .modal-dialog {
+        transform: scale(0.7);
+        opacity: 0;
+        animation: fadeInOut 1.5s forwards;
+      }
+
+      @keyframes fadeInOut {
+        0% { transform: scale(0.7); opacity: 0; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 0; }
+      }
+
+      /* Correct Answer Animation */
+      .modal-content.correcto {
+        background-color: #28a745;
+        color: white;
+        animation: correctAnimation 1s ease-out;
+      }
+
+      /* Incorrect Answer Animation */
+      .modal-content.incorrecto {
+        background-color: #dc3545;
+        color: white;
+        animation: incorrectAnimation 1s ease-out;
+      }
+
     </style>
 </head>
 <body>
@@ -27,25 +95,29 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                  <hr>
                   <li class="nav-item">
-                    <a class="nav-link" href="../../index.html" aria-current="page" href="#">Inicio - Qallarinapaq</a>
+                    <a class="nav-link" aria-current="page" href="/index.html">Inicio - Qallarinapaq</a>
                   </li>
-                  <hr>
                   <li class="nav-item">
-                    <a class="nav-link  active" href="/PAGE/NUMEROS/numeros-prin.html">Numeros - Yupaykuna</a>
+                    <a class="nav-link active" href="/PAGE/NUMEROS/numeros-prin.html">Numeros - Yupaykuna</a>
                   </li>
-                  <hr>
                   <li class="nav-item">
-                    <a class="nav-link" href="/PAGE/COLORES/principal-col.html">Colores - Llimp’ikunataq</a>
+                    <a class="nav-link " href="/PAGE/COLORES/principal-col.html">Colores - Llimp’ikunataq</a>
                   </li>
-                  <hr>
                   <li class="nav-item">
                     <a class="nav-link" href="/PAGE/ANIMALES/animal-prin.html">Animales - Uywakuna</a>
                   </li>
-                  <hr>
                   <li class="nav-item">
                     <a class="nav-link" href="/PAGE/CUERPO HUMANO/CH-PRIN.html">Cuerpo Humano - Runa Kurku</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/FAMILIA/fam-prin.html">Familia - Yawarmasi</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/FIGURAS GEOMETRICAS/fig-geo-prin.html">Figuras Geometricas - Pachatupusqa salta</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/VERBOS/verbos-prin.html">Verbos - Rimana</a>
                   </li>
                 </ul>
               </div>
@@ -62,64 +134,80 @@
         <button id="VolverJ" class="btn btn-primary mt-4" onclick="window.location.href = '/PAGE/NUMEROS/num-pregunta-uno.html';">Volver A Jugar</button>
     </div>
 
+    <!-- Modal para respuestas correctas e incorrectas -->
+    <div class="modal fade" id="respuestaModal" tabindex="-1" aria-labelledby="respuestaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="respuestaModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="mensajeModal">
+                    <!-- El mensaje dinámico de la respuesta será insertado aquí -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="mostrarPregunta()">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Ejemplo de preguntas
         const preguntas = [
             {
                 pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/papaya.png", "../../IMG/numeros/pera.png", "../../IMG/numeros/manzana.png", "../../IMG/numeros/durazno.png"], // Rutas a las imágenes
+                imagenes: ["../../IMG/numeros/papaya.png", "../../IMG/numeros/pera.png", "../../IMG/numeros/manzana.png", "../../IMG/numeros/durazno.png"],
                 audio: "../../AUDIO/NUMEROS/uno.mp3",
-                correcta: 3 // Índice de la imagen correcta
+                correcta: 3
             },
             {
-                pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/ciruela.png", "../../IMG/numeros/piña.png", "../../IMG/numeros/zanahoria9.png", "../../IMG/numeros/papaya.png"], // Rutas a las imágenes
-                audio: "../../AUDIO/NUMEROS/seis.mp3", // Ruta al archivo de audio
-                correcta: 0 // Índice de la imagen correcta
+              pregunta: "¿Cuál es el número?",
+              imagenes: ["../../IMG/numeros/ciruela.png", "../../IMG/numeros/piña.png", "../../IMG/numeros/zanahoria9.png", "../../IMG/numeros/papaya.png"],
+              audio: "../../AUDIO/NUMEROS/seis.mp3",
+              correcta: 0
             },
             {
-                pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/ciruela.png", "../../IMG/numeros/manzana.png", "../../IMG/numeros/durazno.png", "../../IMG/numeros/pera.png"], // Rutas a las imágenes
-                audio: "../../AUDIO/NUMEROS/tres.mp3", // Ruta al archivo de audio
-                correcta: 1 // Índice de la imagen correcta
+              pregunta: "¿Cuál es el número?",
+              imagenes: ["../../IMG/numeros/ciruela.png", "../../IMG/numeros/manzana.png", "../../IMG/numeros/durazno.png", "../../IMG/numeros/pera.png"],
+              audio: "../../AUDIO/NUMEROS/tres.mp3",
+              correcta: 1
             },
             {
-                pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/zanahoria9.png", "../../IMG/numeros/piña.png", "../../IMG/numeros/brocoli.png", "../../IMG/numeros/sandia.png"], // Rutas a las imágenes
-                audio: "../../AUDIO/NUMEROS/nueve.mp3", // Ruta al archivo de audio
-                correcta: 0 // Índice de la imagen correcta
+              pregunta: "¿Cuál es el número?",
+              imagenes: ["../../IMG/numeros/zanahoria9.png", "../../IMG/numeros/piña.png", "../../IMG/numeros/brocoli.png", "../../IMG/numeros/sandia.png"],
+              audio: "../../AUDIO/NUMEROS/nueve.mp3",
+              correcta: 0
             },
             {
-                pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/manzana.png", "../../IMG/numeros/papaya.png", "../../IMG/numeros/platano.png", "../../IMG/numeros/durazno.png"], // Rutas a las imágenes
-                audio: "../../AUDIO/NUMEROS/siete.mp3", // Ruta al archivo de audio
-                correcta: 2 // Índice de la imagen correcta
+              pregunta: "¿Cuál es el número?",
+              imagenes: ["../../IMG/numeros/manzana.png", "../../IMG/numeros/papaya.png", "../../IMG/numeros/platano.png", "../../IMG/numeros/durazno.png"],
+              audio: "../../AUDIO/NUMEROS/siete.mp3",
+              correcta: 2
             },
             {
-                pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/papaya.png", "../../IMG/numeros/pera.png", "../../IMG/numeros/manzana.png", "../../IMG/numeros/durazno.png"], // Rutas a las imágenes
-                audio: "../../AUDIO/NUMEROS/dos.mp3", // Ruta al archivo de audio
-                correcta: 1 // Índice de la imagen correcta
+              pregunta: "¿Cuál es el número?",
+              imagenes: ["../../IMG/numeros/papaya.png", "../../IMG/numeros/pera.png", "../../IMG/numeros/manzana.png", "../../IMG/numeros/durazno.png"],
+              audio: "../../AUDIO/NUMEROS/dos.mp3",
+              correcta: 1
             },
             {
-                pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/platano.png", "../../IMG/numeros/zanahoria.png", "../../IMG/numeros/piña.png", "../../IMG/numeros/tomate.png"], // Rutas a las imágenes
-                audio: "../../AUDIO/NUMEROS/ocho.mp3", // Ruta al archivo de audio
-                correcta: 3 // Índice de la imagen correcta
+              pregunta: "¿Cuál es el número?",
+              imagenes: ["../../IMG/numeros/platano.png", "../../IMG/numeros/zanahoria.png", "../../IMG/numeros/piña.png", "../../IMG/numeros/tomate.png"],
+              audio: "../../AUDIO/NUMEROS/ocho.mp3",
+              correcta: 3
             },
             {
-                pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/naranja.png", "../../IMG/numeros/brocoli.png", "../../IMG/numeros/platano.png", "../../IMG/numeros/sandia.png"], // Rutas a las imágenes
-                audio: "../../AUDIO/NUMEROS/cuatro.mp3", // Ruta al archivo de audio
-                correcta: 0 // Índice de la imagen correcta
+              pregunta: "¿Cuál es el número?",
+              imagenes: ["../../IMG/numeros/naranja.png", "../../IMG/numeros/brocoli.png", "../../IMG/numeros/platano.png", "../../IMG/numeros/sandia.png"],
+              audio: "../../AUDIO/NUMEROS/cuatro.mp3",
+              correcta: 0
             },
             {
-                pregunta: "¿Cuál es el número?",
-                imagenes: ["../../IMG/numeros/manzana.png", "../../IMG/numeros/palta.png", "../../IMG/numeros/papaya.png", "../../IMG/numeros/pera.png"], // Rutas a las imágenes
-                audio: "../../AUDIO/NUMEROS/cinco.mp3", // Ruta al archivo de audio
-                correcta: 2 // Índice de la imagen correcta
-            },
-            // Agrega más preguntas aquí
+              pregunta: "¿Cuál es el número?",
+              imagenes: ["../../IMG/numeros/manzana.png", "../../IMG/numeros/palta.png", "../../IMG/numeros/papaya.png", "../../IMG/numeros/pera.png"],
+              audio: "../../AUDIO/NUMEROS/cinco.mp3",
+              correcta: 2
+            }
         ];
 
         let preguntaActual = 0;
@@ -148,42 +236,51 @@
         }
 
         function verificarRespuesta(index) {
-        const pregunta = preguntas[preguntaActual];
-        const opcionesDiv = document.getElementById('opciones');
+            const pregunta = preguntas[preguntaActual];
+            const opcionesDiv = document.getElementById('opciones');
+            const opciones = opcionesDiv.querySelectorAll('.opcion');
 
-        // Obtener todas las opciones para modificar estilos
-        const opciones = opcionesDiv.querySelectorAll('.opcion');
+            const modal = new bootstrap.Modal(document.getElementById('respuestaModal'));
+            const modalTitle = document.getElementById('respuestaModalLabel');
+            const modalBody = document.getElementById('mensajeModal');
 
-        if (index === pregunta.correcta) {
-            correctas++;
-            //alert('¡Correcto!');
-            // Cambiar el fondo de la opción correcta a verde
-            opciones[index].querySelector('button').style.backgroundColor = 'green';
-        } else {
-            incorrectas++;
-            //alert('Incorrecto.');
-            // Cambiar el fondo de la opción seleccionada a rojo
-            opciones[index].querySelector('button').style.backgroundColor = 'red';
-        }
+            if (index === pregunta.correcta) {
+                correctas++;
+                modalTitle.textContent = "¡Respuesta Correcta!";
+                modalBody.innerHTML = "<p>¡Bien hecho! Has seleccionado la respuesta correcta.</p>";
+                document.querySelector('.modal-content').classList.add('correcto');
+            } else {
+                incorrectas++;
+                modalTitle.textContent = "¡Te has equivocado!";
+                modalBody.innerHTML = "<p>Inténtalo de nuevo. La respuesta correcta es diferente.</p>";
+                document.querySelector('.modal-content').classList.add('incorrecto');
+            }
 
-        // Desactivar todas las opciones después de seleccionar
-        opciones.forEach(opcion => {
-            opcion.querySelector('button').disabled = true;
-        });
+            opciones.forEach(opcion => {
+                opcion.querySelector('button').disabled = true;
+            });
 
-        preguntaActual++;
-        if (preguntaActual < preguntas.length) {
-            // Mostrar siguiente pregunta después de un pequeño retraso
+            modal.show();
+
+            // Cerrar el modal después de 4 segundos (4000 ms)
             setTimeout(() => {
-                mostrarPregunta1();
+                modal.hide();
+                document.querySelector('.modal-content').classList.remove('correcto', 'incorrecto'); // Limpiar clases
             }, 2000);
-        } else {
-            // Mostrar resultados finales
-            document.getElementById('resultado').textContent = `Resultados: ${correctas} correctas, ${incorrectas} incorrectas.`;
-            document.getElementById('siguiente').classList.add('d-none');
-            document.getElementById('VolverJ').classList.remove('d-none');
+
+            preguntaActual++;
+            if (preguntaActual < preguntas.length) {
+                setTimeout(() => {
+                    mostrarPregunta();
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('resultado').textContent = `Resultados: ${correctas} correctas, ${incorrectas} incorrectas.`;
+                    document.getElementById('siguiente').classList.add('d-none');
+                    document.getElementById('VolverJ').classList.remove('d-none');
+                }, 1000);
+            }
         }
-    }
 
         document.getElementById('siguiente').onclick = mostrarPregunta;
         mostrarPregunta();
