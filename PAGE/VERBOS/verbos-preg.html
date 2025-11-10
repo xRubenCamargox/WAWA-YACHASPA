@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAWA YACHASPA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <script src="/SCRIPT/script-preguntas.js" defer></script>
+    <link rel="icon" href="/IMG/LOGO-ICONO.ico" type="image/x-icon">
+
+    <style>
+      .pregunta { font-size: 1.5rem; margin-bottom: 20px; }
+      .opciones img { width: 100%; height: 100%; }
+      .opcion { margin-bottom: 15px; transition: all 0.3s ease-in-out; }
+      #resultado { margin-top: 20px; font-size: 1.2rem; }
+
+      /* Animaciones de respuestas */
+      @keyframes correctAnimation {
+        0% { background-color: green; transform: scale(0.95); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      @keyframes incorrectAnimation {
+        0% { background-color: red; transform: scale(0.95); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      .btn-correcta {
+        background-color: green !important;
+        animation: correctAnimation 0.6s ease;
+      }
+
+      .btn-incorrecta {
+        background-color: red !important;
+        animation: incorrectAnimation 0.6s ease;
+      }
+
+      /* Modal Animations */
+      @keyframes slideIn {
+        0% { transform: scale(0); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+
+      .modal-content {
+        animation: slideIn 0.5s ease-out;
+      }
+
+      /* Center modal */
+      .modal-dialog-centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Adding fade effect for closing */
+      .modal.fade .modal-dialog {
+        transform: scale(0.7);
+        opacity: 0;
+        animation: fadeInOut 1.5s forwards;
+      }
+
+      @keyframes fadeInOut {
+        0% { transform: scale(0.7); opacity: 0; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 0; }
+      }
+
+      /* Correct Answer Animation */
+      .modal-content.correcto {
+        background-color: #28a745;
+        color: white;
+        animation: correctAnimation 1s ease-out;
+      }
+
+      /* Incorrect Answer Animation */
+      .modal-content.incorrecto {
+        background-color: #dc3545;
+        color: white;
+        animation: incorrectAnimation 1s ease-out;
+      }
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-success">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#"><img src="/IMG/LOGO-ICONO.ico" style="height: 30px;">WAWA YACHASPA</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/index.html">Inicio - Qallarinapaq</a>
+                  </li>
+                  <hr>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/PAGE/NUMEROS/numeros-prin.html">Numeros - Yupaykuna</a>
+                  </li>
+                  <hr>
+                  <li class="nav-item">
+                    <a class="nav-link " href="/PAGE/COLORES/principal-col.html">Colores - Llimp’ikunataq</a>
+                  </li>
+                  <hr>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/ANIMALES/animal-prin.html">Animales - Uywakuna</a>
+                  </li>
+                  <hr>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/CUERPO HUMANO/CH-PRIN.html">Cuerpo Humano - Runa Kurku</a>
+                  </li>
+                  <hr>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/FAMILIA/fam-prin.html">Familia - Yawarmasi</a>
+                  </li>
+                  <hr>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/FIGURAS GEOMETRICAS/fig-geo-prin.html">Figuras Geometricas - Pachatupusqa salta</a>
+                  </li>
+                  <hr>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/PAGE/VERBOS/verbos-prin.html">Verbos - Rimana</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+    </header>
+    <div id="cuestionario" class="container py-4 text-center">
+        <div id="pregunta" class="pregunta"></div>
+        <p>Escucha atentamente y selecciona la respuesta correcta</p>
+        <audio id="audio" controls></audio>
+        <div id="opciones" class="row row-cols-2 row-cols-md-4 g-3 justify-content-center"></div>
+        <button id="siguiente" class="btn btn-primary mt-4">Siguiente</button>
+        <div id="resultado" class="text-center"></div>
+        <button id="VolverJ" class="btn btn-primary mt-4" onclick="window.location.href = '/PAGE/NUMEROS/num-pregunta-uno.html';">Volver A Jugar</button>
+    </div>
+
+    <!-- Modal para respuestas correctas e incorrectas -->
+    <div class="modal fade" id="respuestaModal" tabindex="-1" aria-labelledby="respuestaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="respuestaModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="mensajeModal">
+                    <!-- El mensaje dinámico de la respuesta será insertado aquí -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="mostrarPregunta()">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const preguntas = [
+            {
+                pregunta: "¿Cuál es el número?",
+                imagenes: ["../../IMG/VERBOS/VOLAR.png", "../../IMG/VERBOS/BEBER.png", "../../IMG/VERBOS/COMPRAR.png", "../../IMG/VERBOS/SALTAR.png"],
+                audio: "../../AUDIO/VERBOS/BEBER.mp3",
+                correcta: 1
+            },
+            {
+                pregunta: "¿Cuál es el número?",
+                imagenes: ["../../IMG/VERBOS/CORTAR.png", "../../IMG/VERBOS/DORMIR.png", "../../IMG/VERBOS/BEBER.png", "../../IMG/VERBOS/CANTAR.png"],
+                audio: "../../AUDIO/VERBOS/CANTAR.mp3",
+                correcta: 3
+            },
+            {
+                pregunta: "¿Cuál es el número?",
+                imagenes: ["../../IMG/VERBOS/COMPRAR.png", "../../IMG/VERBOS/DESPERTAR.png", "../../IMG/VERBOS/VOLAR.png", "../../IMG/VERBOS/SALTAR.png"],
+                audio: "../../AUDIO/VERBOS/COMPRAR.mp3",
+                correcta: 0
+            },
+            {
+                pregunta: "¿Cuál es el número?",
+                imagenes: ["../../IMG/VERBOS/VOLAR.png", "../../IMG/VERBOS/BEBER.png", "../../IMG/VERBOS/CORTAR.png", "../../IMG/VERBOS/DORMIR.png"],
+                audio: "../../AUDIO/VERBOS/CORTAR.mp3",
+                correcta: 2
+            },
+            {
+                pregunta: "¿Cuál es el número?",
+                imagenes: ["../../IMG/VERBOS/DORMIR.png", "../../IMG/VERBOS/VOLAR.png", "../../IMG/VERBOS/COMPRAR.png", "../../IMG/VERBOS/DESPERTAR.png"],
+                audio: "../../AUDIO/VERBOS/DESPERTAR.mp3",
+                correcta: 3
+            },
+            {
+                pregunta: "¿Cuál es el número?",
+                imagenes: ["../../IMG/VERBOS/SALTAR.png", "../../IMG/VERBOS/DORMIR.png", "../../IMG/VERBOS/BEBER.png", "../../IMG/VERBOS/CANTAR.png"],
+                audio: "../../AUDIO/VERBOS/DORMIR.mp3",
+                correcta: 1
+            },
+            {
+                pregunta: "¿Cuál es el número?",
+                imagenes: ["../../IMG/VERBOS/SALTAR.png", "../../IMG/VERBOS/DESPERTAR.png", "../../IMG/VERBOS/COMPRAR.png", "../../IMG/VERBOS/CORTAR.png"],
+                audio: "../../AUDIO/VERBOS/SALTAR.mp3",
+                correcta: 0
+            },
+            {
+                pregunta: "¿Cuál es el número?",
+                imagenes: ["../../IMG/VERBOS/DORMIR.png", "../../IMG/VERBOS/BEBER.png", "../../IMG/VERBOS/VOLAR.png", "../../IMG/VERBOS/SALTAR.png"],
+                audio: "../../AUDIO/VERBOS/VOLAR.mp3",
+                correcta: 2
+            },
+        ];
+
+        let preguntaActual = 0;
+        let correctas = 0;
+        let incorrectas = 0;
+        document.getElementById('VolverJ').classList.add('d-none');
+
+        function mostrarPregunta() {
+            const pregunta = preguntas[preguntaActual];
+            document.getElementById('pregunta').textContent = pregunta.pregunta;
+
+            const opcionesDiv = document.getElementById('opciones');
+            opcionesDiv.innerHTML = '';
+
+            pregunta.imagenes.forEach((imagen, index) => {
+                const col = document.createElement('div');
+                col.className = 'col opcion';
+                col.innerHTML = `<button class="btn btn-outline-secondary w-100" onclick="verificarRespuesta(${index})">
+                                    <img src="${imagen}" alt="Opción ${index + 1}" class="img-fluid rounded">
+                                </button>`;
+                opcionesDiv.appendChild(col);
+            });
+
+            document.getElementById('audio').src = pregunta.audio;
+            document.getElementById('audio').play();
+        }
+
+        function verificarRespuesta(index) {
+            const pregunta = preguntas[preguntaActual];
+            const opcionesDiv = document.getElementById('opciones');
+            const opciones = opcionesDiv.querySelectorAll('.opcion');
+
+            const modal = new bootstrap.Modal(document.getElementById('respuestaModal'));
+            const modalTitle = document.getElementById('respuestaModalLabel');
+            const modalBody = document.getElementById('mensajeModal');
+
+            if (index === pregunta.correcta) {
+                correctas++;
+                modalTitle.textContent = "¡Respuesta Correcta!";
+                modalBody.innerHTML = "<p>¡Bien hecho! Has seleccionado la respuesta correcta.</p>";
+                document.querySelector('.modal-content').classList.add('correcto');
+            } else {
+                incorrectas++;
+                modalTitle.textContent = "¡Te has equivocado!";
+                modalBody.innerHTML = "<p>Inténtalo de nuevo. La respuesta correcta es diferente.</p>";
+                document.querySelector('.modal-content').classList.add('incorrecto');
+            }
+
+            opciones.forEach(opcion => {
+                opcion.querySelector('button').disabled = true;
+            });
+
+            modal.show();
+
+            // Cerrar el modal después de 4 segundos (4000 ms)
+            setTimeout(() => {
+                modal.hide();
+                document.querySelector('.modal-content').classList.remove('correcto', 'incorrecto'); // Limpiar clases
+            }, 2000);
+
+            preguntaActual++;
+            if (preguntaActual < preguntas.length) {
+                setTimeout(() => {
+                    mostrarPregunta();
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('resultado').textContent = `Resultados: ${correctas} correctas, ${incorrectas} incorrectas.`;
+                    document.getElementById('siguiente').classList.add('d-none');
+                    document.getElementById('VolverJ').classList.remove('d-none');
+                }, 1000);
+            }
+        }
+
+        document.getElementById('siguiente').onclick = mostrarPregunta;
+        mostrarPregunta();
+    </script>
+</body>
+</html>
